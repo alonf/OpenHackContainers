@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips
+  namespace: api
+  labels:
+    app: trips
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trips
+  template:
+    metadata:
+      labels:
+        app: trips
+    spec:
+      containers:
+      - name: trips
+        image: registrytkw2929.azurecr.io/trips:1.0.0
+        env:
+          - name: "PORT"
+            value: "80"
+          - name: "CONFIG_FILES_PATH"
+            value: "/secrets"
+          - name: "SQL_USER"
+            value: "sqladmintKw2929"
+          - name: "SQL_PASSWORD"
+            value: "gW5an2Bs3"
+          - name: "SQL_SERVER"
+            value: "sqlservertkw2929.database.windows.net"
+          - name: "SQL_DBNAME"
+            value: "mydrivingDB"
+          - name: "OPENAPI_DOCS_URI"
+            value: "guid"
+          - name: "DEBUG_LOGGING"
+            value: "true"
+        ports:
+          - name: api
+            containerPort: 80
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trips
+  namespace: api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: api
