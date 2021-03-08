@@ -20,9 +20,9 @@ spec:
         image: registrytkw2929.azurecr.io/tripviewer:1.0.0
         env:
           - name: "USERPROFILE_API_ENDPOINT"
-            value: "http://endpoint.you.specify(:port)"
+            value: "http://api.userprofile:80"
           - name: "TRIPS_API_ENDPOINT"
-            value: "http://endpoint.you.specify(:port)"
+            value: "http://api.trips:80"
           - name: "BING_MAPS_KEY"
             value: "guid"
         ports:
