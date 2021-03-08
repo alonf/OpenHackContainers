@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer
+  namespace: web
+  labels:
+    app: tripviewer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tripviewer
+  template:
+    metadata:
+      labels:
+        app: tripviewer
+    spec:
+      containers:
+      - name: tripviewer
+        image: registrytkw2929.azurecr.io/tripviewer:1.0.0
+        env:
+          - name: "USERPROFILE_API_ENDPOINT"
+            value: "http://endpoint.you.specify(:port)"
+          - name: "TRIPS_API_ENDPOINT"
+            value: "http://endpoint.you.specify(:port)"
+          - name: "BING_MAPS_KEY"
+            value: "guid"
+        ports:
+          - name: web
+            containerPort: 80
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripviewer
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: tripviewer
