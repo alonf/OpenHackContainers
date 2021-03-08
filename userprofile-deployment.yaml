@@ -22,7 +22,7 @@ spec:
           - name: "PORT"
             value: "80"
           - name: "CONFIG_FILES_PATH"
-            value: "http://endpoint.you.specify(:port)"
+            value: "/secrets"
           - name: "SQL_USER"
             value: "sqladmintKw2929"
           - name: "SQL_PASSWORD"
