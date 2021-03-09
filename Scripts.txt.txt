@@ -1,3 +1,9 @@
+cli login:
+
+az login
+az aks get-credentials --resource-group teamResources --name aks_auth
+kubectl config use-context aks_auth
+
 Create k8s secrets:
 kubectl create secret generic dev-db-secret -n api --from-literal=SQL_USER=sqladmintKw2929 --from-literal=SQL_PASSWORD='gW5an2Bs3' --from-literal=SQL_SERVER=sqlservertkw2929.database.windows.net --from-literal=SQL_DBNAME=mydrivingDB
 
