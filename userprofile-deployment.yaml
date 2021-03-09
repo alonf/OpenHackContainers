@@ -23,13 +23,40 @@ spec:
             value: "80"
           - name: "CONFIG_FILES_PATH"
             value: "/secrets"
-        envFrom:
-          - secretRef:
-              name: dev-db-secret
+        resources:
+          requests:
+            cpu: 25m
+            memory: 50Mi
+          limits:
+            cpu: 150m
+            memory: 150Mi
         ports:
           - name: api
             containerPort: 80
             protocol: TCP
+        volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-gebakv"
+            nodePublishSecretRef:                       # Only required when using service principal mode
+              name: secrets-store-creds                 # Only required when using service principal mode
+
+#todo: https://blog.baeke.info/2020/12/07/azure-key-vault-provider-for-secrets-store-csi-driver/
+#            options:
+#              keyvaultname: "akskeyvaultOH"
+#              keyvaultobjectnames: "SQLUSER;SQLPASSWORD;SQLSERVER;SQLDBNAME"
+#              keyvaultobjecttypes: "secret;secret;secret;secret"
+#              keyvaultobjectaliases: "SQL_USER;SQL_PASSWORD;SQL_SERVER;SQL_DBNAME"
+#              resourcegroup: "teamResources"
+#              subscriptionid: eb3ca7c9-c8af-45f9-9e55-b0819be2ea9d
+#              tenantid: b5ae3126-ec25-4e89-b6b1-36957ba38bf9
 ---
 apiVersion: v1
 kind: Service

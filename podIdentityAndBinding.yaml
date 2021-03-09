@@ -1,0 +1,16 @@
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentity
+metadata:
+    name: pod-identity                 # The name of your Azure identity
+spec:
+    type: 0                                 # Set type: 0 for managed identity
+    resourceID: /subscriptions/eb3ca7c9-c8af-45f9-9e55-b0819be2ea9d/resourcegroups/teamResources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/pod-identity
+    clientID: "174a5ca1-d8f8-4ae9-b31a-74673579ef1f"   # The clientId of the User-assigned managed identity that you created earlier
+---
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentityBinding
+metadata:
+    name: azure-pod-identity-binding
+spec:
+    azureIdentity: "pod-identity"      # The name of your Azure identity
+    selector: azure-pod-identity-binding-selector
