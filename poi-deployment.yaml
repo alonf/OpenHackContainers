@@ -16,7 +16,7 @@ spec:
         app: poi
     spec:
       containers:
-      - name: tripviewer
+      - name: poi
         image: registrytkw2929.azurecr.io/poi:1.0.0
         env:
           - name: "ASPNETCORE_ENVIRONMENT"
@@ -40,4 +40,4 @@ spec:
   - port: 80
     targetPort: 80
   selector:
-    app: api
+    app: poi
