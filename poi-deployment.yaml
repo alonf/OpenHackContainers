@@ -19,14 +19,11 @@ spec:
       - name: tripviewer
         image: registrytkw2929.azurecr.io/poi:1.0.0
         env:
-          - name: "SQL_USER"
-            value: "sqladmintKw2929"
-          - name: "SQL_PASSWORD"
-            value: "gW5an2Bs3"
-          - name: "SQL_SERVER"
-            value: "mydrivingDB"
           - name: "ASPNETCORE_ENVIRONMENT"
-            value: "Production"
+            value: "Development"
+        envFrom:
+          - secretRef:
+              name: dev-db-secret
         ports:
           - name: api
             containerPort: 80
