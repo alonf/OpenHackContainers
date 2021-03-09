@@ -7,6 +7,20 @@ kubectl config use-context aks_auth
 Create k8s secrets:
 kubectl create secret generic dev-db-secret -n api --from-literal=SQL_USER=sqladmintKw2929 --from-literal=SQL_PASSWORD='gW5an2Bs3' --from-literal=SQL_SERVER=sqlservertkw2929.database.windows.net --from-literal=SQL_DBNAME=mydrivingDB
 
-Push ssh capable container: (https://hub.docker.com/r/kroniak/ssh-client/)
-kubectl apply -f ssh.yaml
-kubectl exec -it sshclient -- bash
+
+
+aad commands:
+$AKS_ID=az aks show --resource-group teamResources --name aks_auth --query id -o tsv
+
+$APPDEV_ID=az ad group create --display-name apidev --mail-nickname apidev --query objectId -o tsv
+
+az role assignment create --assignee $APPDEV_ID --role "Azure Kubernetes Service Cluster User Role" --scope $AKS_ID
+
+$APPDEV_ID1=az ad group create --display-name webdev --mail-nickname webdev --query objectId -o tsv
+
+az role assignment create --assignee $APPDEV_ID1 --role "Azure Kubernetes Service Cluster User Role" --scope $AKS_ID
+
+az ad group member add --group apidev --member-id $APPDEV_ID
+az ad group member add --group webdev --member-id $APPDEV_ID1
+
+az ad group show --group apidev --query objectId -o tsv
